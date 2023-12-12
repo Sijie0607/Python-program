@@ -1,4 +1,46 @@
 import csv
+
+data = []  # Initialize an empty list to hold the data
+
+# Open the CSV file and read the data into a list of dictionaries
+with open(r"C:\Users\ellac\OneDrive\Desktop\Python\Python_BankData.csv", newline='', encoding='utf-8-sig') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        data.append(row)
+
+# Verification code dictionary (username as key, code as value)
+verification_codes = {
+    'Abby': 'abc123',
+    'Bella': 'def456',
+    'Cathy': 'ghi789',
+    'Dora': 'jkl012',
+    'Emma': 'mno345'
+}
+
+# Function to handle account access
+def account_access(username, pin, account_type):
+    for user in data:
+        if user['username'] == username and user['password'] == pin:
+            if account_type.lower() == 'checking':
+                return float(user['checking($)'])
+            elif account_type.lower() == 'savings':
+                return float(user['saving($)'])
+    return None
+
+# Function to handle bill payment
+def bill_payment(username, bill_type, amount):
+    for user in data:
+        if user['username'] == username:
+            if bill_type in user['bill history']:
+                # Bill payment 
+                return f"Paid {bill_type} bill of ${amount} for {username}"
+    return "Bill payment unsuccessful"
+
+appointment_schedule = {}  # Dictionary to store appointment schedules
+
+
+
+import csv
 import sys
 
 # Function to verify user credentials
