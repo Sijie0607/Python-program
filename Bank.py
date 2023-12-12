@@ -61,3 +61,63 @@ def main():
 
 if __name__ == "__main__":
     main()
+===========================================================================================
+import pandas as pd
+file_path = "C:\\Users\\hw\\Desktop\\python\\Python_BankData.csv"
+bankfile = pd.read_csv(file_path)
+print(bankfile)
+external_account = []
+
+
+def moneytransfer(username):
+    user_choice = int(input('Internal transfer or external transfer(1/2):'))
+    if user_choice == 1:
+        saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
+        print(f'saving balance:{saving:6}')
+        amount1 = float(input('How much money would you like to transfer:'))
+        if amount1 <= saving:
+            print('transfer successfully')
+            new_saving = saving - amount1
+            bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0] = new_saving
+            checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
+            new_checking = checking - amount1
+            bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_checking
+            print(f'new_saving ={new_saving:6}')
+            print(f'new_checking ={new_checking:6}')
+            print(bankfile.loc[bankfile['username'] == username, 'saving($)', 'checking($)'])
+    if user_choice == 2:
+        saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
+        print(f'saving balance:{saving:6}')
+        external_account = input('input the account number you want to transfer to:')
+        amount2 = float(input('Input the amount you want to send:'))
+        if amount2 <= saving and amount2 <= 2000:
+            new_saving = saving - amount2
+            index = bankfile.loc[bankfile['username'] == username, 'saving($)'].index[0]  # after the sorting on username row and saving($)column, there is only one value in this series
+            bankfile.at[index, 'saving($)'] = new_saving
+            print(bankfile['saving($)'])
+            print(bankfile.loc[bankfile['username'] == username, 'saving($)'])
+            print('transfer successfully')
+            # print(bankfile.loc[bankfile['username'] == username, 'saving($)'])
+        elif amount2 > 2000:   # if the amount is larger than the banchmark
+            print('your pin number is sent')
+            pin = float(input('please input your pin number:'))
+            if pin == 000:  # here the pin suppose to be the one random number and we just let the user use 000 as the pin in
+                bankfile.loc[bankfile['username'] == username, 'saving($)'] = bankfile.loc[bankfile['username'] == username, 'saving($)'] - amount2
+                print('transfer successfully')
+                print(bankfile['saving($)'])
+
+
+username = input('your username')
+moneytransfer(username)
+
+def loanapply(accountnumber):
+    accountnumber = input('please input your account number:')
+    if input_account_number in bankfile['account_number'].values:
+        credit_score = bankfile.loc[bankfile['account_number'] == input_account_number, 'credit_score'].values[0]
+        print(f'Your credit score is: {credit_score}')
+        loan_amount = float(input('Enter the loan amount you need:'))
+        saving_amount = bankfile.loc[bankfile['account_number'] == input_account_number, 'saving($)'].values[0]
+        loan_to_saving_ratio = loan_amount / saving_amount
+        print(f'Loan to Saving Ratio: {loan_to_saving_ratio:.2%}')
+    else:
+        print('Nonexistent Account')
