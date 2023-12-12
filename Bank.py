@@ -17,49 +17,7 @@ verification_codes = {
     'Emma': 'mno345'
 }
 
-# Function to handle account access
-def account_access(username, pin, account_type):
-    for user in data:
-        if user['username'] == username and user['password'] == pin:
-            if account_type.lower() == 'checking':
-                return float(user['checking($)'])
-            elif account_type.lower() == 'savings':
-                return float(user['saving($)'])
-    return None
 
-# Function to handle bill payment
-def bill_payment(username, bill_type, amount):
-    for user in data:
-        if user['username'] == username:
-            if bill_type in user['bill history']:
-                # Bill payment 
-                return f"Paid {bill_type} bill of ${amount} for {username}"
-    return "Bill payment unsuccessful"
-
-appointment_schedule = {}  # Dictionary to store appointment schedules
-
-while True:
-    user_id = input("Please enter your Username: ")
-    pin = input("Please enter your password: ")
-
-    user_found = any(user['username'] == user_id and user['password'] == pin for user in data)
-    if user_found:
-        verification_attempts = 3
-        while verification_attempts > 0:
-            verification_code = input("Please enter the verification code sent to your number: ")
-            if verification_code == verification_codes.get(user_id):
-                print("Verification code accepted")
-                print("Verification successful. Access granted.")
-
-                while True:
-                    print("Select an option below:")
-                    print("1. Account access")
-                    print("2. Bill payment")
-                    print("3. Appointments")
-                    print("4. Notifications")
-                    print("5. Loans")
-                    print("6. Exit")
-                    try:
 
 
 import csv
