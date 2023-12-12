@@ -1,5 +1,59 @@
 import csv
+import sys
+import pandas as pd
 
+# Function to verify user credentials
+def verify_credentials(username, password, bankfile):
+    return str(bankfile.loc[bankfile['username'] == username, 'password'].values[0]) == password
+def verify_credentials_code(username, third_platform_code, bankfile):
+    return str(bankfile.loc[bankfile['username'] == username, 'third_platform_code'].values[0]) == third_platform_code
+
+def displayMenu():
+    print("1. Account Access")
+    print("2. Bill Payment")
+    print("3. Appointment")
+    print("4. Notification")
+    print("5. Loans")
+    print("6. Exit")
+    choice=input("Enter your choice: ")
+    return choice
+# Main function
+def main():
+    file_path = "Python_BankData.csv"
+    bankfile = pd.read_csv(file_path)
+    attempts = 0
+    tp_attempt = 0
+
+    while attempts < 3:     # username can be tried innfinite times, but password can only be tried 3 times. after thhat, the account will be blocked
+        username = input("Enter your username: ")
+        if username in bankfile['username'].values:
+            while(attempts < 3):
+                password = input("Enter your password: ")
+                if verify_credentials(username, password, bankfile):
+                    while tp_attempt < 3:
+                        third_platform_code = input("Enter the third-platform code: ")      #Since we are unable to write code in another platform to send the third-platform code, 
+                        if verify_credentials_code(username, third_platform_code, bankfile):       
+                            print(f"Hi {username}, Welcome!")
+                            choice=displayMenu()
+                            return  
+                        else:
+                            tp_attempt += 1
+                            print("Third-platform code incorrect.")
+                            if tp_attempt == 3:
+                                print("Third-platform code verification failed.")
+                                return
+                else:
+                    print("Incorrect password.")
+                    attempts += 1
+        else:
+            print("Incorrect username.")
+
+    if attempts == 3:
+        print("Your account is blocked. Please go to the nearest bank branch to ask for help.")
+
+if __name__ == "__main__":
+    main()
+#*********************************************************************
 data = []  # Initialize an empty list to hold the data
 
 # Open the CSV file and read the data into a list of dictionaries
@@ -69,8 +123,8 @@ import csv
 import sys
 
 # Function to verify user credentials
-def verify_credentials(username, password, user_data):
-    return user_data.get(username) == password ##
+def verify_credentials(username, password, user_data):    #user_data: dictory
+    return user_data.get(username) == password         ##.get: username is key and password 是返回的值，如果username和password对应，true；反之则false
 
 # Load user data from CSV 
 def load_user_data(csv_file_path):
