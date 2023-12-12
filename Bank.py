@@ -17,7 +17,8 @@ verification_codes = {
     'Emma': 'mno345'
 }
 
-
+=====================================================================================================================================================
+##Appointment Function
 def schedule_appointment(option, user_id):
     if option == 3:
         appointment_times = {
@@ -40,7 +41,24 @@ def schedule_appointment(option, user_id):
         else:
             print("Sorry, appointment time is not available.")
 
-
+================================================================================================================================
+## Bill Payment Function
+def process_bill_payment(option, user_id):
+    if option == 2:
+        print("Select a bill type:")
+        print("1. Water")
+        print("2. Electricity")
+        bill_type = int(input("Enter your choice (1 or 2): "))
+        if bill_type == 1:
+            amount = float(input("Enter the amount to pay for water bill: "))
+            result = bill_payment(user_id, 'water', amount)
+            print(result)
+        elif bill_type == 2:
+            amount = float(input("Enter the amount to pay for electricity bill: "))
+            result = bill_payment(user_id, 'electricity', amount)
+            print(result)
+        else:
+            print("Invalid choice")
 
 
 
