@@ -3,23 +3,24 @@ import sys
 
 # Function to verify user credentials
 def verify_credentials(username, password, user_data):
-    return user_data.get(username) == password
+    return user_data.get(username) == password ##
 
 # Load user data from CSV 
 def load_user_data(csv_file_path):
-    user_data = {}
+    user_data = {} ##
 
     # Read CSV and process data
     with open(csv_file_path, mode = 'r') as file:     
         csv_reader = csv.DictReader(file)
-        for row in csv_reader:
+        for row in csv_reader: # try column
             username = row["username"]
             password = row["password"]
             # Store the username as key and password as value in the dictionary
             user_data[username] = password
     return user_data
 def displayMenu():
-    print("1. Account Access")
+    print("1.Balance Enquiry")
+    print("1. Money Transfer")
     print("2. Bill Payment")
     print("3. Appointment")
     print("4. Notification")
@@ -69,27 +70,27 @@ print(bankfile)
 external_account = []
 
 
-def moneytransfer(username):
+def moneytransfer(username): ## accountaccess
     user_choice = int(input('Internal transfer or external transfer(1/2):'))
-    if user_choice == 1:
+    if user_choice == 1: ## add the choice for customer to have a choice of their account
         saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
         print(f'saving balance:{saving:6}')
-        amount1 = float(input('How much money would you like to transfer:'))
+        amount_internal = float(input('How much money would you like to transfer:'))  #amount1)
         if amount1 <= saving:
             print('transfer successfully')
             new_saving = saving - amount1
             bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0] = new_saving
-            checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
+            checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] ##checking account also can transfer money
             new_checking = checking - amount1
             bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_checking
             print(f'new_saving ={new_saving:6}')
             print(f'new_checking ={new_checking:6}')
             print(bankfile.loc[bankfile['username'] == username, 'saving($)', 'checking($)'])
-    if user_choice == 2:
+    if user_choice == 2:  ## choose your saving or checking account
         saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
         print(f'saving balance:{saving:6}')
         external_account = input('input the account number you want to transfer to:')
-        amount2 = float(input('Input the amount you want to send:'))
+        amount_external = float(input('Input the amount you want to send:'))
         if amount2 <= saving and amount2 <= 2000:
             new_saving = saving - amount2
             index = bankfile.loc[bankfile['username'] == username, 'saving($)'].index[0]  # after the sorting on username row and saving($)column, there is only one value in this series
