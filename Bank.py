@@ -121,3 +121,37 @@ def loanapply(accountnumber):
         print(f'Loan to Saving Ratio: {loan_to_saving_ratio:.2%}')
     else:
         print('Nonexistent Account')
+
+
+
+==========================================================================================================================
+elif option == 3:
+                            appointment_times = {
+                                '9AM': 'yes',
+                                '11AM': 'no',
+                                '1PM': 'yes',
+                                '3PM': 'no'
+                            }
+
+                            print("Available appointment times:")
+                            for time, status in appointment_times.items():
+                                if status == 'yes':
+                                    print(time)
+
+                            chosen_time = input("Enter your desired appointment time: ")
+
+                            if chosen_time in appointment_times and appointment_times[chosen_time] == 'yes':
+                                print("Appointment scheduled!")
+                                appointment_schedule[user_id] = chosen_time
+                            else:
+                                print("Sorry, appointment time is not available.")
+
+                        elif option == 4:
+                            username = input("Enter your username: ")
+                            for user in data:
+                                if user['username'] == username:
+                                    if user['# of lines'] > 0:
+                                        print(f"You have {user['# of lines']} notifications.")
+                                    else:
+                                        print("You don't have any notifications.")
+                                    break
