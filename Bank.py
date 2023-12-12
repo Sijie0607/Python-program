@@ -296,3 +296,64 @@ elif option == 3:
                                     else:
                                         print("You don't have any notifications.")
                                     break
+
+
+===========================================================================================================
+##How to call the function
+bill_payment(username)
+if option == 3:
+    bill_payment(username)
+
+
+import pandas as pd
+
+def bill_payment(username):
+    data = pd.read_csv(r"C:\Users\ellac\OneDrive\Desktop\Python\Python_BankData.csv")
+
+    user_data = data[data['username'] == username]
+
+    if user_data.empty:
+        print("User not found.")
+        return
+
+    print("Bill payment option selected.")
+    print("Select an option:")
+    print("1. Pay bill")
+    print("2. View bill payment history")
+    sub_option = input("Enter your choice (1 or 2): ")
+
+    if sub_option == '1':
+        print("Select a bill type:")
+        print("1. Electricity")
+        print("2. Water")
+        print("3. Gas")
+        bill_type_choice = input("Enter your choice (1 to 3): ")
+
+        bill_types = ['electricity', 'water', 'gas']
+        bill_type = bill_types[int(bill_type_choice) - 1]
+
+        amount_to_pay = float(input(f"Enter the amount to pay for {bill_type}: "))
+
+        initial_balance = user_data.loc[:, 'checking($)'].values[0]
+        print(f"Initial balance in checking account: ${initial_balance}")
+
+        confirmation = input(f"Confirm payment of ${amount_to_pay} for {bill_type}. Enter 'yes' to confirm: ")
+
+        if confirmation.lower() == 'yes':
+            
+            data.loc[data['username'] == username, 'checking($)'] -= amount_to_pay
+            updated_balance = data.loc[data['username'] == username, 'checking($)'].values[0]
+
+            print(f"Payment of ${amount_to_pay} for {bill_type} successful.")
+            print(f"Updated balance in checking account: ${updated_balance}")
+            data[data['username'] == username] = user_data
+            data.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python\Python_BankData.csv", index=False)
+        else:
+            print("Payment cancelled.")
+        
+    elif sub_option == '2':
+        print(user_data.loc[:, 'bill history'].values[0])
+    
+    else:
+        print("Invalid choice.")
+
