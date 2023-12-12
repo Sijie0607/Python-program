@@ -18,6 +18,33 @@ verification_codes = {
 }
 
 
+def schedule_appointment(option, user_id):
+    if option == 3:
+        appointment_times = {
+            '9AM': 'yes',
+            '11AM': 'no',
+            '1PM': 'yes',
+            '3PM': 'no'
+        }
+
+        print("Available appointment times:")
+        for time, status in appointment_times.items():
+            if status == 'yes':
+                print(time)
+
+        chosen_time = input("Enter your desired appointment time: ")
+
+        if chosen_time in appointment_times and appointment_times[chosen_time] == 'yes':
+            print("Appointment scheduled!")
+            appointment_schedule[user_id] = chosen_time
+        else:
+            print("Sorry, appointment time is not available.")
+
+
+
+
+
+
 
 
 import csv
