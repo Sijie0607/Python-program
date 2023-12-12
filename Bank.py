@@ -38,6 +38,28 @@ def bill_payment(username, bill_type, amount):
 
 appointment_schedule = {}  # Dictionary to store appointment schedules
 
+while True:
+    user_id = input("Please enter your Username: ")
+    pin = input("Please enter your password: ")
+
+    user_found = any(user['username'] == user_id and user['password'] == pin for user in data)
+    if user_found:
+        verification_attempts = 3
+        while verification_attempts > 0:
+            verification_code = input("Please enter the verification code sent to your number: ")
+            if verification_code == verification_codes.get(user_id):
+                print("Verification code accepted")
+                print("Verification successful. Access granted.")
+
+                while True:
+                    print("Select an option below:")
+                    print("1. Account access")
+                    print("2. Bill payment")
+                    print("3. Appointments")
+                    print("4. Notifications")
+                    print("5. Loans")
+                    print("6. Exit")
+                    try:
 
 
 import csv
