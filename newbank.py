@@ -130,7 +130,7 @@ def moneytransfer(username):
                 print(f'New checking :{new_checking:.2f}')
                 print('transfer successfully')
 ====================================================================================================================================
-#Notifications
+# 4. Notifications
 from datetime import datetime
 def check_credit_payment(username):
     user_data = bankfile[bankfile['username'] == username]
@@ -156,7 +156,7 @@ def check_credit_payment(username):
         print(f"Your next credit payment of ${credit_amount} is due in {days_until_payment} days.")
 
 ===========================================================================================================================================
-#Appointments
+# 3. Appointments
 
 # Initialize a dictionary to store appointments
 appointment_schedule = {}
@@ -184,7 +184,7 @@ def schedule_appointment(username):
 
 
 ===============================================================================================================================
-#Balance enquiry
+# 6.Balance enquiry
 def balance_enquiry(username):
     user_data = bankfile[bankfile['username'] == username]
     print("Select an account type:")
@@ -203,7 +203,7 @@ def balance_enquiry(username):
 
 
 =========================================================================================================================================
-#Bill payment
+# 2. Bill payment
 def bill_payment(username):
     user_data = bankfile[bankfile['username'] == username]
     if user_data.empty:
@@ -250,7 +250,7 @@ def bill_payment(username):
     else:
         print("Invalid choice.")
     ===============================================================================================================
-#loanfunction
+# 5.loanfunction
     def loanapply(username):
         account_number = bankfile.loc[bankfile['username'] == username, 'account number'].values[0]
         credit_score = bankfile.loc[bankfile['account number'] == account_number, 'credit score'].values[0]
