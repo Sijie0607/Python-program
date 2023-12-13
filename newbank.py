@@ -246,3 +246,19 @@ def bill_payment(username):
 
     else:
         print("Invalid choice.")
+    ===============================================================================================================
+#loanfunction
+    def loanapply(username):
+        account_number = bankfile.loc[bankfile['username'] == username, 'account number'].values[0]
+        credit_score = bankfile.loc[bankfile['account number'] == account_number, 'credit score'].values[0]
+        print(f'Your credit score is: {credit_score}')
+        if credit_score <= 600:
+            print('Not enough credit score')
+        else:
+            loan_amount = float(input('Enter the loan amount you need:'))
+            saving_amount = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
+            loan_to_saving_ratio = loan_amount / saving_amount
+            if loan_to_saving_ratio >= 2:
+                print('Can not apply for loan now.')
+            else:
+                print('Please bring your certification to the bank.')
