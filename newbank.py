@@ -15,7 +15,8 @@ def displayMenu():
     print("3. Appointment")
     print("4. Notification")
     print("5. Loans")
-    print("6. Exit")
+    print("6. Balance Enquiry")
+    print("7. Exit")
     choice = input("Enter your choice: ")
     return choice
 
@@ -50,7 +51,9 @@ def Accountaccess():
                                 accountnumber = int(input('Please enter your account number: '))
                                 loanapply(accountnumber)
                             elif choice == '6':
-                                sys.exit('Thank you')
+                                balance_enquiry(username)
+                            elif choice == '7':
+                                sys.exit('Thank You for banking with us!')
                             else:
                                 print("Invalid choice.")
                     else:
