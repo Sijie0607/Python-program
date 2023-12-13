@@ -126,3 +126,74 @@ def moneytransfer(username):
                 bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_checking
                 print(f'New checking :{new_checking:.2f}')
                 print('transfer successfully')
+====================================================================================================================================
+#Notifications
+from datetime import datetime
+def check_credit_payment(username):
+    user_data = bankfile[bankfile['username'] == username]
+    credit_amount = user_data['Credit Amount'].values[0]
+    
+    # Get today's date
+    today = datetime.now()
+    
+    # Check if it's past the 25th of the month
+    if today.day >= 25:
+        # Payment due on the 25th of next month
+        next_payment_date = datetime(today.year, today.month + 1, 25)
+    else:
+        # Payment due on the 25th of this month
+        next_payment_date = datetime(today.year, today.month, 25)
+    
+    # Calculate days until next payment
+    days_until_payment = (next_payment_date - today).days
+    
+    if days_until_payment == 0:
+        print(f"Payment for credit amount ${credit_amount} is due today!")
+    else:
+        print(f"Your next credit payment of ${credit_amount} is due in {days_until_payment} days.")
+
+===========================================================================================================================================
+#Appointments
+
+# Initialize a dictionary to store appointments
+appointment_schedule = {}
+
+def schedule_appointment(username):
+    appointment_times = {
+        '9AM': 'yes',
+        '11AM': 'no',
+        '1PM': 'yes',
+        '3PM': 'no'
+    }
+
+    print("Available appointment times:")
+    for time, status in appointment_times.items():
+        if status == 'yes':
+            print(time)
+
+    chosen_time = input("Please enter your desired appointment time: ").upper()
+
+    if chosen_time in appointment_times and appointment_times[chosen_time] == 'yes':
+        print("Appointment scheduled!")
+        appointment_schedule[username] = chosen_time  # Store the appointment in the dictionary
+    else:
+        print("Sorry, appointment time is not available.")
+
+
+===============================================================================================================================
+#Balance enquiry
+def balance_enquiry(username):
+    user_data = bankfile[bankfile['username'] == username]
+    print("Select an account type:")
+    print("1. Checking")
+    print("2. Savings")
+    account_choice = input("Please enter your choice (1 or 2): ")
+    
+    if account_choice == '1':
+        checking_balance = user_data['checking($)'].values[0]
+        print(f"Checking account balance for {username}: ${checking_balance}")
+    elif account_choice == '2':
+        savings_balance = user_data['saving($)'].values[0]
+        print(f"Savings account balance for {username}: ${savings_balance}")
+    else:
+        print("Invalid choice.")
