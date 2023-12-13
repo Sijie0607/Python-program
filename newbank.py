@@ -197,3 +197,52 @@ def balance_enquiry(username):
         print(f"Savings account balance for {username}: ${savings_balance}")
     else:
         print("Invalid choice.")
+
+
+=========================================================================================================================================
+#Bill payment
+def bill_payment(username):
+    user_data = bankfile[bankfile['username'] == username]
+    if user_data.empty:
+        print("User not found.")
+        return
+
+    print("Bill payment option selected.")
+    print("Please select an option from below:")
+    print("1. Pay bill")
+    print("2. View bill payment history")
+    sub_option = input("Please enter your choice (1, 2 or 3): ")
+
+    if sub_option == '1':
+        print("Select a bill type:")
+        print("1. Electricity")
+        print("2. Water")
+        print("3. Gas")
+        bill_type_choice = input("Enter your choice (1 to 3): ")
+
+        bill_types = ['electricity', 'water', 'gas']
+        bill_type = bill_types[int(bill_type_choice) - 1]
+
+        amount_to_pay = float(input(f"Please enter the amount to pay for {bill_type}: "))
+
+        initial_balance = user_data.loc[:, 'checking($)'].values[0]
+        print(f"Available balance in checking account: ${initial_balance}")
+
+        confirmation = input(f"Please enter 'yes' to confirm payment of ${amount_to_pay} for {bill_type}: ")
+
+        if confirmation.lower() == 'yes':
+
+           bankfile.loc[bankfile['username'] == username, 'checking($)'] -= amount_to_pay
+           updated_balance = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
+           print(f"Payment of ${amount_to_pay} for {bill_type} successful.")
+           print(f"Updated balance in checking account: ${updated_balance}")
+           bankfile[bankfile['username'] == username] = user_data
+           bankfile.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv", index=False)
+        else:
+            print("Payment cancelled.")
+
+    elif sub_option == '2':
+        print(user_data.loc[:, 'bill history'].values[0])
+
+    else:
+        print("Invalid choice.")
