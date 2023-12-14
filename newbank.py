@@ -66,67 +66,89 @@ def check_credit_payment(username):
         print(f"Your next credit payment of ${credit_amount} is due in {days_until_payment} days.")
 
 
-
+========================================================================================================
 def moneytransfer(username):
     user_choice = int(input('Please enter 1 for Internal Transfer or 2 for External Transfer:'))
+
     if user_choice == 1:
         saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
         checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
-        print(f'Savings balance:${saving:.2f}')
-        print(f'Checking balance:${saving:.2f}')
+        print(f'Savings balance: ${saving:.2f}')
+        print(f'Checking balance: ${checking:.2f}')
+
         print('1. Checking to Savings.')
         print('2. Savings to Checking.')
         s_or_ch = input('Please input your choice: ')
-        if (s_or_ch == "1"):
+
+        if s_or_ch == "1":
             amount1 = float(input('How much money would you like to transfer:'))
+            
             if amount1 <= checking:
-                print('transfer successful')
                 new_checking = checking - amount1
-                bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0] = new_checking
                 new_saving = saving + amount1
-                bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_saving
+
+                print('Transfer successful')
                 print(f'Your new savings account balance is ${new_saving:.2f}')
                 print(f'Your new current account balance is ${new_checking:.2f}')
-                bankfile.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv", index=False)
-        elif (s_or_ch == "2"):
+                bankfile.loc[bankfile['username'] == username, 'saving($)'] = new_saving
+                bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
+                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
+
+            else:
+                print("Insufficient Funds!")
+
+        elif s_or_ch == "2":
             amount1 = float(input('How much money would you like to transfer:'))
+            
             if amount1 <= saving:
-                print('transfer successful')
                 new_saving = saving - amount1
-                bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0] = new_saving
                 new_checking = checking + amount1
-                bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_checking
+                print('Transfer successful')
                 print(f'Your new savings account balance is ${new_saving:.2f}')
                 print(f'Your new current account balance is ${new_checking:.2f}')
-                bankfile.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv", index=False)
+                bankfile.loc[bankfile['username'] == username, 'saving($)'] = new_saving
+                bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
+                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
+            else:
+                print("Insufficient Funds!")
         else:
             print("Invalid Input!")
-    if user_choice == 2:
+
+    elif user_choice == 2:
         checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
-        print(f'Checking balance:{checking:.2f}')
+        print(f'Checking balance: ${checking:.2f}')
         external_account = input('Please input the account number you want to transfer to:')
-        amount2 = float(input('Please input the amount you want to transfer:'))
-        if amount2 > checking:
-            print("Insuffient Funds!")
-        elif amount2 <= checking and amount2 <= 2000:
-            new_checking = checking - amount2
-            bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_checking
-            print('Transfer successful')
+        
+        if len(external_account) == 10:
+            amount2 = float(input('Please input the amount you want to transfer:'))
             
-            bankfile.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv", index=False)
-            print(f'New checking :{new_checking:.2f}')
-        elif amount2 > 2000:   # if the amount is higher than the banchmark
-            print('A PIN has been sent to your phone number')
-            pin = int(input('Please input the PIN:'))
-            if pin == 0:
-                # here the pin is suppose to be the one random number and we just let the user use 0 as the pin
+            if amount2 > checking:
+                print("Insufficient Funds!")
+                
+            elif amount2 <= checking and amount2 <= 2000:
                 new_checking = checking - amount2
-                bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0] = new_checking
-                print(f'New checking :{new_checking:.2f}')
                 print('Transfer successful')
-                bankfile.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv", index=False)
+                print(f'Your new current account balance is ${new_checking:.2f}')
+                bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
+                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
 
+            elif amount2 > 2000:
+                print('A PIN has been sent to your phone number')
+                pin = int(input('Please input the PIN:'))
 
+                if pin == 0:
+                    new_checking = checking - amount2
+                    print('Transfer successful')
+                    print(f'Your new current account balance is ${new_checking:.2f}')
+                    bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
+                    bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
+
+                else:
+                    print('Invalid Pin')
+        else:
+            print('Invalid account number. Please enter a 10-digit account number.')
+
+==============================================================================================================================
 def loanapply(username):
     account_number = bankfile.loc[bankfile['username'] == username, 'account number'].values[0]
     credit_score = bankfile.loc[bankfile['account number'] == account_number, 'credit score'].values[0]
