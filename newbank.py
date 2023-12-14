@@ -244,7 +244,7 @@ def balance_enquiry(username):
         print(f"Checking account balance for {username}: ${checking_balance}")
     elif account_choice == '2':
         savings_balance = user_data['saving($)'].values[0]
-        print(f"Savings account balance for {username}: ${savings_balance}")
+        print(f"Savings account balance for {username}: ${savings_balance:.2f}")
     else:
         print("Invalid choice.")
 
