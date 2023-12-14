@@ -68,31 +68,30 @@ def check_credit_payment(username):
 
 ========================================================================================================
 def moneytransfer(username):
-    user_choice = int(input('Please enter 1 for Internal Transfer or 2 for External Transfer:'))
+    user_choice = int(input('Please enter 1 for Internal Transfer or 2 for External Transfer:'))  #let user know there are two choices to transfer money
 
     if user_choice == 1:
-        saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
-        checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
-        print(f'Savings balance: ${saving:.2f}')
+        saving = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]  #Select the column"saving" where your row in dataframe(bankfile) meet the condition 'username'= the user input  
+        checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]  #value[0] means select unique values after row and column filtering
+        print(f'Savings balance: ${saving:.2f}') 
         print(f'Checking balance: ${checking:.2f}')
 
-        print('1. Checking to Savings.')
-        print('2. Savings to Checking.')
+        print('1. Checking to Savings.') 
+        print('2. Savings to Checking.')  # Can choose to withdrawals from both savings and checking accounts, resulting in changes in the respective columns' values in the CSV file.
         s_or_ch = input('Please input your choice: ')
 
         if s_or_ch == "1":
-            amount1 = float(input('How much money would you like to transfer:'))
+            amount1 = float(input('How much money would you like to transfer:'))  
             
-            if amount1 <= checking:
-                new_checking = checking - amount1
-                new_saving = saving + amount1
-
+            if amount1 <= checking:        #  If condition will make sure the user's input amount need to less than the balance in their account eotherwise it will show the hit to notify the insufficient money
+                new_checking = checking - amount1  
+                new_saving = saving + amount1      #Assigning values to the new account balances
                 print('Transfer successful')
                 print(f'Your new savings account balance is ${new_saving:.2f}')
                 print(f'Your new current account balance is ${new_checking:.2f}')
                 bankfile.loc[bankfile['username'] == username, 'saving($)'] = new_saving
-                bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
-                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
+                bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking   #Both account balances will change simultaneously，Assign new values back to the dataframe in the original position
+                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False) #Update the new value to CSV file and the file while remain these new value which will be used next time as the minuend..
 
             else:
                 print("Insufficient Funds!")
@@ -110,33 +109,30 @@ def moneytransfer(username):
                 bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
                 bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
             else:
-                print("Insufficient Funds!")
+                print("Insufficient Funds!") # when user choose 2 under the outer if loop，just change direction of transfer and the other part remain same.
+                
         else:
-            print("Invalid Input!")
+            print("Invalid Input!")  # under this outer if loop, if user input other number, it will prompt the user with an invalid option.
 
-    elif user_choice == 2:
+    elif user_choice == 2: # the elif is parallel to the outer if loop，user choose to do a external transfer, our default set for the external transfer is from checking account.
         checking = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
         print(f'Checking balance: ${checking:.2f}')
-        external_account = input('Please input the account number you want to transfer to:')
+        external_account = input('Please input the account number you want to transfer to:') 
         
-        if len(external_account) == 10:
+        if len(external_account) == 10: # Nesting a if condition to constraint the account number's format
             amount2 = float(input('Please input the amount you want to transfer:'))
-            
             if amount2 > checking:
-                print("Insufficient Funds!")
-                
-            elif amount2 <= checking and amount2 <= 2000:
-                new_checking = checking - amount2
+                print("Insufficient Funds!")   
+            elif amount2 <= checking and amount2 <= 2000: # When the user's input amount is lower than the account balance and it is less than 2000(default benchmark),processing following code 
+                new_checking = checking - amount2  # renewing the checking balance 
                 print('Transfer successful')
                 print(f'Your new current account balance is ${new_checking:.2f}')
                 bankfile.loc[bankfile['username'] == username, 'checking($)'] = new_checking
-                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False)
-
-            elif amount2 > 2000:
+                bankfile.to_csv("C:\\Users\\hw\\Desktop\\python\\Python_BankDatafinal.csv", index=False) # Assign new value to the CSv File and deposit the new value in certain position.
+            elif amount2 > 2000:                          # if the user's input ammount to do a external transfer is larger than 2000, the Pin code will be send to the user's phone
                 print('A PIN has been sent to your phone number')
-                pin = int(input('Please input the PIN:'))
-
-                if pin == 0:
+                pin = int(input('Please input the PIN:')) 
+                if pin == 0:                               # Here we just assume the pin is 0 which been sent to the user.
                     new_checking = checking - amount2
                     print('Transfer successful')
                     print(f'Your new current account balance is ${new_checking:.2f}')
@@ -149,17 +145,17 @@ def moneytransfer(username):
             print('Invalid account number. Please enter a 10-digit account number.')
 
 ==============================================================================================================================
-def loanapply(username):
-    account_number = bankfile.loc[bankfile['username'] == username, 'account number'].values[0]
-    credit_score = bankfile.loc[bankfile['account number'] == account_number, 'credit score'].values[0]
+def loanapply(username):                                                                         # In logic, the credit score is associate with their account number
+    account_number = bankfile.loc[bankfile['username'] == username, 'account number'].values[0]  # choose the 'account number'column and the row  where 'username' = user's username input in the dataframe
+    credit_score = bankfile.loc[bankfile['account number'] == account_number, 'credit score'].values[0]  # choose the 'credit scores 'column and the row  where 'account number' =  account_number in the dataframe
     print(f'Your credit score is: {credit_score}')
     if credit_score <= 600:
         print('Not enough credit score')
     else:
         loan_amount = float(input('Please enter the loan amount you need:'))
-        saving_amount = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
-        loan_to_saving_ratio = loan_amount / saving_amount
-        if loan_to_saving_ratio >= 2:
+        saving_amount = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0] 
+        loan_to_saving_ratio = loan_amount / saving_amount            # Calculating the ratio of loan amount over saving amount to do an initial filtering 
+        if loan_to_saving_ratio >= 2:                                  # 2 is the benchmark that bank set as an index 
             print('Sorry. You cannot apply for a loan now.')
         else:
             print('Please submit your documents to the bank.')
