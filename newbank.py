@@ -18,17 +18,17 @@ def bill_payment(username):
         bill_type_choice = input("Please enter your choice (1 or 2): ")
 
         bill_types = ['electricity', 'water']
-        bill_type = bill_types[int(bill_type_choice) - 1]
+        bill_type = bill_types[int(bill_type_choice) - 1]        # change the string number into int number, and match electricity with 1-1 and water with 2-1
 
         amount_to_pay = float(input(f"Please enter the amount to pay for {bill_type}: $"))
 
-        initial_balance = bankfile.loc[:, 'checking($)'].values[0]
+        initial_balance = bankfile.loc[:, 'checking($)'].values[0]        # locate checking balance in csv
         print(f"Available balance in checking account: ${initial_balance}")
 
         confirmation = input(f"Please enter 'yes' to confirm payment of ${amount_to_pay} for {bill_type}: ")
 
-        if confirmation.lower() == 'yes':
-            if initial_balance > amount_to_pay:
+        if confirmation.lower() == 'yes':        # make sure user input is either case of yes
+            if initial_balance > amount_to_pay:        # if balance > amount needs to be paid, subtract the amount from balance and update
                 bankfile.loc[bankfile['username'] == username, 'checking($)'] -= amount_to_pay
                 updated_balance = bankfile.loc[bankfile['username'] == username, 'checking($)'].values[0]
                 print(f"Payment of ${amount_to_pay} for {bill_type} successful.")
@@ -36,18 +36,18 @@ def bill_payment(username):
                 bankfile[bankfile['username'] == username] = bankfile
                 bankfile.to_csv(r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv", index=False)
             else:
-                print('Insufficient Balance')
+                print('Insufficient Balance')        # if balance < amount needs to be paid
         else:
-            print("Payment cancelled.")
+            print("Payment cancelled.")        # if confirmation is not yes, cancel payment
 
     elif sub_option == '2':
-        print(bankfile.loc[:, 'bill history'].values[0])
+        print(bankfile.loc[:, 'bill history'].values[0])        # locate bill history in csv
 
     else:
         print("Invalid choice.")
 
 
-
+#========================================================================================================
 def check_credit_payment(username):
     credit_amount = bankfile.loc[bankfile['username'] == username, 'Credit Amount'].values[0]
     
@@ -249,12 +249,12 @@ def balance_enquiry(username):
         print("Invalid choice.")
 
 
-
-def verify_credentials(username, password, bankfile):
-    return str(bankfile.loc[bankfile['username'] == username, 'password'].values[0]) == password
-
+# ======================================================================================================================
+def verify_credentials(username, password, bankfile):        
+    return str(bankfile.loc[bankfile['username'] == username, 'password'].values[0]) == password        # locate username in the csv and match the password
+                                                                                                        
 def verify_credentials_code(username, third_platform_code, bankfile):
-    return str(bankfile.loc[bankfile['username'] == username, 'third_platform_code'].values[0]) == third_platform_code
+    return str(bankfile.loc[bankfile['username'] == username, 'third_platform_code'].values[0]) == third_platform_code        # match third platform code
 
 
 
@@ -275,18 +275,18 @@ def Accountaccess():
     password_attempts = 0
     tp_code_attempts = 0
     
-    while username_attempts < 3:
+    while username_attempts < 3:        # username can be input three times
         username = input("Please enter your username: ")
         
-        if username in bankfile['username'].values:
-            while password_attempts < 3:
+        if username in bankfile['username'].values:       
+            while password_attempts < 3:        # password can be input three times
                 password = input("Please enter your password: ")
                 
                 if verify_credentials(username, password, bankfile):
-                    while tp_code_attempts < 3:
+                    while tp_code_attempts < 3:        # tp code can be input three times
                         third_platform_code = input("Please enter the third-platform code: ")
                         
-                        if verify_credentials_code(username, third_platform_code, bankfile):
+                        if verify_credentials_code(username, third_platform_code, bankfile):        # if username, password, tp code are all correct
                             print(f"Hi {username}, Welcome!")
                             # Displaying the menu options after successful login
                             while True:
