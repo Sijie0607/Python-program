@@ -159,7 +159,7 @@ def loanapply(username):
     if credit_score <= 600:
         print('Not enough credit score')
     else:
-        loan_amount = float(input('Please enter the loan amount you need:'))
+        loan_amount = float(input('Please enter the loan amount you need: $'))
         saving_amount = bankfile.loc[bankfile['username'] == username, 'saving($)'].values[0]
         loan_to_saving_ratio = loan_amount / saving_amount
         if loan_to_saving_ratio >= 2:
@@ -308,7 +308,7 @@ def Accountaccess():
                                     check_credit_payment(username)
                                 elif choice == '5':
                                     accountnumber = int(input('Please enter your account number: '))
-                                    loanapply(accountnumber)
+                                    loanapply(username)
                                 elif choice == '6':
                                     balance_enquiry(username)
                                 elif choice == '7':
