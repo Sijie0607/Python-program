@@ -4,15 +4,15 @@ from datetime import datetime
 file_path = r"C:\Users\ellac\OneDrive\Desktop\Python_BankData.csv"
 bankfile = pd.read_csv(file_path)
 
-
+# Function for handling Bill Payment (It takes username as input)
 def bill_payment(username):
-    print("Please select an option from below:")
+    print("Please select an option from below:")  #Displays bill options and prompts the user for an input
     print("1. Pay bill")
     print("2. View bill payment history")
     sub_option = input("Please enter your choice (1 or 2): ")
 
     if sub_option == '1':
-        print("Select a bill type:")
+        print("Select a bill type:")    #Displays bill options and prompts user for an input
         print("1. Electricity")
         print("2. Water")
         bill_type_choice = input("Please enter your choice (1 or 2): ")
@@ -20,7 +20,7 @@ def bill_payment(username):
         bill_types = ['electricity', 'water']
         bill_type = bill_types[int(bill_type_choice) - 1]        # change the string number into int number, and match electricity with 1-1 and water with 2-1
 
-        amount_to_pay = float(input(f"Please enter the amount to pay for {bill_type}: $"))
+        amount_to_pay = float(input(f"Please enter the amount to pay for {bill_type}: $")) 
 
         initial_balance = bankfile.loc[:, 'checking($)'].values[0]        # locate checking balance in csv
         print(f"Available balance in checking account: ${initial_balance}")
@@ -48,19 +48,20 @@ def bill_payment(username):
 
 
 #========================================================================================================
+# Function to check credit payment due date for a user (Takes username as input)
 def check_credit_payment(username):
-    credit_amount = bankfile.loc[bankfile['username'] == username, 'Credit Amount'].values[0]
+    credit_amount = bankfile.loc[bankfile['username'] == username, 'Credit Amount'].values[0]  # Fetch credit amount for the given username from the bankfile
     
-    # Credit payment is due on the 25th day of every month
+    # Determine the due date for credit payment (always due on the 25th of each month)
     today = datetime.now()
-    if today.day >= 25:
-        next_payment_date = datetime(today.year, today.month + 1, 25)
+    if today.day >= 25:    # If current day is 25th or later in the month
+        next_payment_date = datetime(today.year, today.month + 1, 25)  # Next payment is in the following month on the 25th
     else:
-        next_payment_date = datetime(today.year, today.month, 25)
+        next_payment_date = datetime(today.year, today.month, 25)  # Next payment is in the current month on the 25th 
 
-    days_until_payment = (next_payment_date - today).days
+    days_until_payment = (next_payment_date - today).days  # Calculate the number of days until the next credit payment is due
     
-    if days_until_payment == 0:
+    if days_until_payment == 0:    # Display the information regarding the due date of the credit payment
         print(f"Payment for credit amount ${credit_amount} is due today!")
     else:
         print(f"Your next credit payment of ${credit_amount} is due in {days_until_payment} days.")
@@ -164,7 +165,7 @@ def loanapply(username):
         else:
             print('Please submit your documents to the bank.')
 
-
+==============================================================================================================================
 # Initialize a dictionary to store appointments
 appointment_schedule = {}
 def schedule_appointment(username):
@@ -230,19 +231,19 @@ def schedule_appointment(username):
         print("Appointment scheduled!")
         appointment_schedule[username] = chosen_time.upper()  # Store the appointment in the dictionary
         appointment_times[chosen_time.upper()] = 'no'  # Mark the chosen time as unavailable for other users
-
-
+==============================================================================================================================
+# Function for balance enquiry (Takes username as input)
 def balance_enquiry(username):
-    user_data = bankfile[bankfile['username'] == username]
-    print("Select an account type:")
+    user_data = bankfile[bankfile['username'] == username]    # Fetch user data based on the provided username from bankfile
+    print("Select an account type:")   # Display options for the user to select the account type
     print("1. Checking")
     print("2. Savings")
     account_choice = input("Please enter your choice (1 or 2): ")
     
-    if account_choice == '1':
+    if account_choice == '1':   # Retrieve and display the checking account balance for the user
         checking_balance = user_data['checking($)'].values[0]
         print(f"Checking account balance for {username}: ${checking_balance}")
-    elif account_choice == '2':
+    elif account_choice == '2':    # Retrieve and display the savings account balance for the user
         savings_balance = user_data['saving($)'].values[0]
         print(f"Savings account balance for {username}: ${savings_balance:.2f}")
     else:
@@ -258,7 +259,7 @@ def verify_credentials_code(username, third_platform_code, bankfile):
 
 
 
-
+#Main Menu function
 def displayMenu():
     print("1. Money Transfer")
     print("2. Bill Payment")
@@ -269,7 +270,8 @@ def displayMenu():
     print("7. Exit")
     choice = input("Please enter your choice: ")
     return choice
-
+===============================================================================================================
+#Account Access function
 def Accountaccess():
     username_attempts = 0
     password_attempts = 0
