@@ -1,3 +1,5 @@
+# GROUP 5: Emmanuella Acheampong, Nuo Cheng , Sijie Liu
+
 import pandas as pd
 import sys
 from datetime import datetime
