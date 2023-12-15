@@ -67,7 +67,8 @@ def check_credit_payment(username):
         print(f"Your next credit payment of ${credit_amount} is due in {days_until_payment} days.")
 
 
-========================================================================================================
+#========================================================================================================
+#Function to handle funds transfer
 def moneytransfer(username):
     user_choice = int(input('Please enter 1 for Internal Transfer or 2 for External Transfer:'))
 
@@ -149,7 +150,8 @@ def moneytransfer(username):
         else:
             print('Invalid account number. Please enter a 10-digit account number.')
 
-==============================================================================================================================
+#==============================================================================================================================
+# Function to handle loan application
 def loanapply(username):
     account_number = bankfile.loc[bankfile['username'] == username, 'account number'].values[0]
     credit_score = bankfile.loc[bankfile['account number'] == account_number, 'credit score'].values[0]
@@ -165,7 +167,8 @@ def loanapply(username):
         else:
             print('Please submit your documents to the bank.')
 
-==============================================================================================================================
+#==============================================================================================================================
+Function for handling appointments
 # Initialize a dictionary to store appointments
 appointment_schedule = {}
 def schedule_appointment(username):
@@ -231,7 +234,7 @@ def schedule_appointment(username):
         print("Appointment scheduled!")
         appointment_schedule[username] = chosen_time.upper()  # Store the appointment in the dictionary
         appointment_times[chosen_time.upper()] = 'no'  # Mark the chosen time as unavailable for other users
-==============================================================================================================================
+#==============================================================================================================================
 # Function for balance enquiry (Takes username as input)
 def balance_enquiry(username):
     user_data = bankfile[bankfile['username'] == username]    # Fetch user data based on the provided username from bankfile
@@ -251,6 +254,7 @@ def balance_enquiry(username):
 
 
 # ======================================================================================================================
+# Function for handling login credentials
 def verify_credentials(username, password, bankfile):        
     return str(bankfile.loc[bankfile['username'] == username, 'password'].values[0]) == password        # locate username in the csv and match the password
                                                                                                         
@@ -270,7 +274,7 @@ def displayMenu():
     print("7. Exit")
     choice = input("Please enter your choice: ")
     return choice
-===============================================================================================================
+#===============================================================================================================
 #Account Access function
 def Accountaccess():
     username_attempts = 0
