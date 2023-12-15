@@ -168,7 +168,7 @@ def loanapply(username):
             print('Please submit your documents to the bank.')
 
 #==============================================================================================================================
-Function for handling appointments
+#Function for handling appointments
 # Initialize a dictionary to store appointments
 appointment_schedule = {}
 def schedule_appointment(username):
