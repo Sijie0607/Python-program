@@ -5,11 +5,11 @@ Project Name: Mobile App for ABC Bank
 This Python-based banking application provides users with various banking functionalities, including balance inquiry, bill payments, appointment scheduling, loan applications, and more. The program interacts with a CSV file (bankfile.csv) containing user banking information to execute these operations.
 
 **Table of Contents**
-Features
-Installation
-Usage
-Contributing
-Credits
+1. Features
+2. Installation
+3. Usage
+4. Contributing
+5. Credits
 
 **Features**
 Balance Inquiry: Check account balances for checking and savings accounts.
@@ -17,16 +17,17 @@ Bill Payment: Pay bills for electricity and water with available account funds.
 Appointment Scheduling: Schedule and manage appointments for bank visits.
 Loan Applications: Apply for loans based on credit scores and savings.
 Funds Transfer: Transfer funds between own accounts or externally.
+Notification: Get an update of all bills with details
 
 **Installation**
-Python Requirements: Ensure Python 3.x is installed.
-Clone the Repository: 
-git clone Python-program/newbank.py at main · Sijie0607/Python-program (github.com)
+1. Python Requirements: Ensure Python 3.x is installed.
+2. Clone the Repository: 
+3. git clone Python-program/newbank.py at main · Sijie0607/Python-program (github.com)
 
 **Install Dependencies:**
-pip install pandas  # Ensure required dependencies are installed.
-From datetime import datetime
-sys 
+1. pip install pandas  # Ensure required dependencies are installed.
+2. From datetime import datetime
+3. sys 
 
 **Usage**
 File Structure:
